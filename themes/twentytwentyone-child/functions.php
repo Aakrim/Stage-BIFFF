@@ -8,7 +8,7 @@ function theme_register_assets(){
     wp_enqueue_script('bootstrap');
 }
 
-// Exit if accessed directly
+// Exit if accessed directly XD
 if ( !defined( 'ABSPATH' ) ) exit;
 
 // BEGIN ENQUEUE PARENT ACTION
