@@ -1,0 +1,46 @@
+[
+    {
+        "name": "appsero/client",
+        "version": "dev-develop",
+        "version_normalized": "dev-develop",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/Appsero/client.git",
+            "reference": "66bcdae1d5a6b6b8431c249ee735a39a60782e06"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/Appsero/client/zipball/66bcdae1d5a6b6b8431c249ee735a39a60782e06",
+            "reference": "66bcdae1d5a6b6b8431c249ee735a39a60782e06",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3"
+        },
+        "time": "2020-07-20T09:20:52+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Appsero\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Tareq Hasan",
+                "email": "tareq@appsero.com"
+            }
+        ],
+        "description": "Appsero Client",
+        "keywords": [
+            "analytics",
+            "plugin",
+            "theme",
+            "wordpress"
+        ]
+    }
+]
