@@ -61,7 +61,7 @@ add_action( "admin_init", function() {
 	// Change these to whatever you set
 	$sitepoint = array(
 		"custom-field" => "sitepoint_post_attachment",
-		"custom-post-type" => "sitepoint_posts"
+		"custom-post-type" => "post"
 	);
 
 	// Récupération des datas des CSV
@@ -140,7 +140,7 @@ add_action( "admin_init", function() {
 		));
 
 		// Uploads directory
-		$uploads_dir = wp_upload_dir();
+		/*$uploads_dir = wp_upload_dir();
 		
 		$attachment = array();
 		$attachment["path"] = "{$uploads_dir["baseurl"]}/csvattachments/{$post["attachment"]}";
@@ -161,7 +161,7 @@ add_action( "admin_init", function() {
 
 		// Update post's custom field with attachment
 		update_field( $sitepoint["custom-field"], $post["attachment"]["id"], $post["id"] );
-		
+		*/
 	}
 
 });
