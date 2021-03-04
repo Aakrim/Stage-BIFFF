@@ -33,8 +33,8 @@ add_action('wp_enqueue_scripts','theme_register_assets');
 
 // END ENQUEUE PARENT ACTION
 
-// CODE AJOUT POST VIA CSV //
 
+// CODE AJOUT POST VIA CSV //
 
 /**
  * Ajout du bouton "insert Post" pour admin
@@ -112,38 +112,37 @@ add_action("admin_init", function () {
 	};
 
 
-	//****** Partie problematique, l'ajout se fait même si le post existe déjà ******
+	
 
 	//On vérifie si le post existe déjà dans la db	
-	$post_exists = function ($post_title) use ($wpdb, $insert_post) {
+	$post_exists = function ($post_name) use ($wpdb, $insert_post) {
 
 		//on recup un tableau de tous les posts dans notre custom post type
-		$posts = $wpdb->get_col("SELECT post_title FROM {$wpdb->posts} WHERE post_type = '{$insert_post["custom-post-type"]}'");
+		$posts = $wpdb->get_col("SELECT post_name FROM {$wpdb->posts} WHERE post_type = '{$insert_post["custom-post-type"]}'");				
 
 		//on vérifie si le titre existe dans le tableau
-		return in_array($post_title, $posts);
+		return in_array($post_name, $posts);
 	};
 
+	//die(var_dump($posts()));
+	
 	foreach ($posts() as $post) {
+
 		// Si le post existe déjà , on skip ce post et on passe au suivant
-		if ($post_exists($post["post_title"])) {
+		if ($post_exists($post["post_name"])) {
 			continue;
+			// en cas d'update, ici <-
+			//si pas d'update, impossible de rajouter des champs, car le test des doublons "continue" le code et skip l'entrée
 		}
-
-		//****** Fin partie problematique ******
-
-
-
-
+	
 		// Insertion du post dans la database
 		$post["ID"] = wp_insert_post(array(
-			"post_title" => $post["post_name"],
-			//	"product_cat"=>$post["post_cat"],
-			//	"post_content" => $post["post_content"],
+			"post_title" => $post["post_name"],					
+			//permet de remove le 2015| de 2015|movie	
+			//"product_cat" => substr(strrchr($post["tax:product_cat"],"|"), 1), A VOIR PLUS TARD
 			"post_type" => $insert_post["custom-post-type"],
 			"post_status" => "publish"
 		));
-
 
 		// Update post's custom field
 		// var_dump($post);
@@ -152,7 +151,7 @@ add_action("admin_init", function () {
 	}
 
 	//Redirection pour clear l'url du &insertion_csv_post afin d'eviter le lancement de la fonction à chaque refresh
-	
+
 	$url = "http://localhost/PHP/wikibiffLocal/wp-admin/edit.php?post_type=film";
 	wp_redirect($url);
 	exit;
