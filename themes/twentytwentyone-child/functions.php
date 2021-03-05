@@ -133,21 +133,22 @@ add_action("admin_init", function () {
 			continue;
 			// en cas d'update, ici <-
 			//si pas d'update, impossible de rajouter des champs, car le test des doublons "continue" le code et skip l'entrée
-		}
+		} else {
+			// Insertion du post dans la database
+			$post["ID"] = wp_insert_post(array(
+				"post_title" => $post["post_name"],					
+				//permet de remove le 2015| de 2015|movie	
+				//"product_cat" => substr(strrchr($post["tax:product_cat"],"|"), 1), A VOIR PLUS TARD
+				"post_type" => $insert_post["custom-post-type"],
+				"post_status" => "publish"
+			));
 	
-		// Insertion du post dans la database
-		$post["ID"] = wp_insert_post(array(
-			"post_title" => $post["post_name"],					
-			//permet de remove le 2015| de 2015|movie	
-			//"product_cat" => substr(strrchr($post["tax:product_cat"],"|"), 1), A VOIR PLUS TARD
-			"post_type" => $insert_post["custom-post-type"],
-			"post_status" => "publish"
-		));
-
-		// Update post's custom field
-		// var_dump($post);
-
-		update_field('titre_original', $post["post_title"], $post["ID"]);
+			// Update post's custom field
+			// var_dump($post);
+	
+			update_field('titre_original', $post["post_title"], $post["ID"]);
+			
+		}
 	}
 
 	//Redirection pour clear l'url du &insertion_csv_post afin d'eviter le lancement de la fonction à chaque refresh
