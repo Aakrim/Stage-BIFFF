@@ -6,6 +6,7 @@ function theme_register_assets(){
     wp_register_script('bootstrap','https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js');
     wp_enqueue_style('bootstrap');
     wp_enqueue_script('bootstrap');
+	wp_enqueue_style( 'stylecss', get_stylesheet_uri() ); 
 }
 
 // Exit if accessed directly XD
