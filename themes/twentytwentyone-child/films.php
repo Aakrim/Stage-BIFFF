@@ -12,36 +12,40 @@
 
 
 
-
 <!--
-*ENLEVER 11e film, limite à 10 dans le carousel
-*TRIER par genre de film, pouvoir afficher que le genre film d'horreur dans le carousel
-*reussir a intégrer le lien vers la page du film, cliquable sur l'image du carousel sans casser le carousel
 *intégrer le titre du film dans l'image du carousel, pas au dessus
  -->
 
 
 
-
-
-
-<div class="englobe">
+ <div class="englobe">
   <div class="customPrevBtn"><i class="fas fa-chevron-circle-left fa-2x"></i></div>
   <div class="carousel-wrap">
     <div class="owl-carousel">
-      <?php $loop = new WP_Query(array('post_type' => 'film')); ?>
+      <?php $loop = new WP_Query(array('post_type' => 'film', 'posts_per_page' => 5,    'tax_query' => [
+        'relation' => 'OR',
+        [
+          'taxonomy' => 'genre',
+          'field' => 'slug',
+          'terms' => 'gore'
+        ]
+      ])); ?>
       <?php while ($loop->have_posts()) : $loop->the_post(); ?>
         <div class="item">
-          <?php the_field('titre_original'); ?>
-          <img style="width:360px ; height:500px;" src="<?php the_post_thumbnail(); ?></div>
+         <span class="titreFilm"> <?php the_field('titre_original'); ?></span>
+          <a href="<?php the_permalink(); ?>">
+            <img style="width:360px; height:500px;" src="<?php the_post_thumbnail(); ?>
+          </a>
+          </div>
 
 <?php endwhile; ?>
     
     </div>
   </div>
-  <div class="customNextBtn"><i class="fas fa-chevron-circle-right fa-2x"></i>
+  <div class=" customNextBtn"><i class="fas fa-chevron-circle-right fa-2x"></i>
         </div>
     </div>
+
 
 
     <script>
