@@ -49,6 +49,21 @@ add_action("admin_notices", function () {
 	echo "</div>";
 });
 
+
+if(!function_exists('wp_dump')) :
+    function wp_dump(){
+        if(func_num_args() === 1)
+        {
+            $a = func_get_args();
+            echo '<pre>', var_dump( $a[0] ), '</pre><hr>';
+        }
+        else if(func_num_args() > 1)
+            echo '<pre>', var_dump( func_get_args() ), '</pre><hr>';
+        else
+            throw Exception('You must provide at least one argument to this function.');
+    }
+endif;
+
 /**
  * Creation et insertion des posts depuis fichiers CSV 
  */
@@ -140,7 +155,7 @@ add_action("admin_init", function () {
 		//var_dump($explodeGenre);
 		
 		
-		$idGenres = array (); 
+/*		$idGenres = array (); 
 		//a:3:{i:0;s:2:"70";i:1;s:2:"29";i:2;s:2:"72";}
 		$genres = array (
 			"action" => "70",
@@ -174,6 +189,7 @@ add_action("admin_init", function () {
 			"zombie" => "62"
 		);
 		
+		
 
 		$genreString = 'a:3:{';
 		
@@ -185,9 +201,30 @@ add_action("admin_init", function () {
 		$genreString .= '}';
 
 		//var_dump($idGenres);
-		
+*/		
 	
+	
+		$genres_dyn=get_terms("genre");
 		
+		$genres=array();
+		foreach($genres_dyn as $gdyn){
+			$genres[$gdyn->name]=$gdyn->term_id;
+		}
+		
+		$idGenres=array();
+		foreach($explodeGenre as $g){
+			
+			if (array_key_exists($g, $genres)){
+				array_push($idGenres, $genres[$g]);
+			} else {
+				//the taxonomy does not exist --> create it
+				$newid=wp_insert_term($g, "genre", sanitize_title($g));
+				wp_dump($newid);
+				array_push($idGenres, $newid["term_id"]);
+			}
+		}
+		
+		wp_dump($idGenres);
 		
 		//DELETE FROM `wp_posts` WHERE `wp_posts`.`ID` > 300;	
 				
@@ -201,8 +238,8 @@ add_action("admin_init", function () {
 			//"product_cat" => substr(strrchr($post["tax:product_cat"],"|"), 1), A VOIR PLUS TARD
 			"post_content" =>$post["post_content"],
 			"post_type" => $insert_post["custom-post-type"],
-			"attribute:pa_cast" => $post["attribute:pa_cast"],
-			"attribute:pa_genre" => $idGenres,			
+			//"attribute:pa_cast" => $post["attribute:pa_cast"],
+			//"attribute:pa_genre" => $idGenres,			
 			"post_status" => "publish"
 		));
 		
@@ -213,11 +250,15 @@ add_action("admin_init", function () {
 		update_field('titre_original', $post["post_title"], $post["ID"]);
 		update_field('entry-content', $post["post_content"], $post["ID"]);
 		update_field('casting', $post["attribute:pa_cast"], $post["ID"]);
-		update_field('field_60364d57c8199',$idGenres, $post["ID"]);
+		
+		update_field( 'field_60364d57c8199', $idGenres, $post["ID"] );
+		
+		
+		//update_field('field_60364d57c8199',$idGenres, $post["ID"]);
 	}
 
 	//Redirection pour clear l'url du &insertion_csv_post afin d'eviter le lancement de la fonction à chaque refresh
-	$url = "http://localhost/PHP/wikibisLocal/wp-admin/edit.php?post_type=film";
-	wp_redirect($url);
+	$url = "http://localhost/wikibifff/wp-admin";
+	//wp_redirect($url);
 	exit;
 });
