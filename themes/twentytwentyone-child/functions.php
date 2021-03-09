@@ -33,7 +33,6 @@ add_action('wp_enqueue_scripts','theme_register_assets');
 
 // END ENQUEUE PARENT ACTION
 
-
 // CODE AJOUT POST VIA CSV //
 
 /**
@@ -47,21 +46,6 @@ add_action("admin_notices", function () {
 	echo "</p>";
 	echo "</div>";
 });
-
-
-if(!function_exists('wp_dump')) :
-    function wp_dump(){
-        if(func_num_args() === 1)
-        {
-            $a = func_get_args();
-            echo '<pre>', var_dump( $a[0] ), '</pre><hr>';
-        }
-        else if(func_num_args() > 1)
-            echo '<pre>', var_dump( func_get_args() ), '</pre><hr>';
-        else
-            throw Exception('You must provide at least one argument to this function.');
-    }
-endif;
 
 /**
  * Creation et insertion des posts depuis fichiers CSV 
@@ -142,94 +126,14 @@ add_action("admin_init", function () {
 	//die(var_dump($posts()));
 	
 	foreach ($posts() as $post) {
-		
+
 		// Si le post existe déjà , on skip ce post et on passe au suivant
 		if ($post_exists($post["post_name"])) {
 			continue;
 			// en cas d'update, ici <-
 			//si pas d'update, impossible de rajouter des champs, car le test des doublons "continue" le code et skip l'entrée
 		}
-		
-		$explodeGenre = explode("|", $post["attribute:pa_genre"]);
-		//var_dump($explodeGenre);
-		
-		
-/*		$idGenres = array (); 
-		//a:3:{i:0;s:2:"70";i:1;s:2:"29";i:2;s:2:"72";}
-		$genres = array (
-			"action" => "70",
-			"adventure" => "29",
-			"animation" => "72",
-			"black comedy" => "57",
-			"crime" => "58",
-			"disaster" => "66",
-			"documentary"=>"69",
-			"dystopia"=>"64",
-			"end of the world" => "54",
-			"fantasy" => "77",
-			"fairytale" => "68",
-			"film noir" => "74",
-			"ghost movie" => "65",
-			"gore" => "51",
-			"horror" => "50",
-			"martial arts" => "71",
-			"monster movie" => "55",
-			"mystery" => "59",
-			"parody" => "76",
-			"post-apocalyptic" => "75",
-			"science-fiction" => "60",
-			"serial killer" => "52",
-			"slasher" => "53",
-			"supernatural" => "61",
-			"surreal" => "63",
-			"thriller" => "56",
-			"time travel" => "67",
-			"vampire" => "73",
-			"zombie" => "62"
-		);
-		
-		
-
-		$genreString = 'a:3:{';
-		
-		foreach($explodeGenre as $k => $g){
-			
-			$genreString .= 'i:'.$k.';s:2:"'.$genres[$g].'";';
-			$idGenres[] = $genres[$g];
-		}
-		$genreString .= '}';
-
-		//var_dump($idGenres);
-*/		
 	
-	
-		$genres_dyn=get_terms("genre");
-		
-		$genres=array();
-		foreach($genres_dyn as $gdyn){
-			$genres[$gdyn->name]=$gdyn->term_id;
-		}
-		
-		$idGenres=array();
-		foreach($explodeGenre as $g){
-			
-			if (array_key_exists($g, $genres)){
-				array_push($idGenres, $genres[$g]);
-			} else {
-				//the taxonomy does not exist --> create it
-				$newid=wp_insert_term($g, "genre", sanitize_title($g));
-				wp_dump($newid);
-				array_push($idGenres, $newid["term_id"]);
-			}
-		}
-		
-		wp_dump($idGenres);
-		
-		//DELETE FROM `wp_posts` WHERE `wp_posts`.`ID` > 300;	
-				
-			
-			
-
 		// Insertion du post dans la database
 		$post["ID"] = wp_insert_post(array(
 			"post_title" => $post["post_name"],	
@@ -237,11 +141,10 @@ add_action("admin_init", function () {
 			//"product_cat" => substr(strrchr($post["tax:product_cat"],"|"), 1), A VOIR PLUS TARD
 			"post_content" =>$post["post_content"],
 			"post_type" => $insert_post["custom-post-type"],
-			//"attribute:pa_cast" => $post["attribute:pa_cast"],
-			//"attribute:pa_genre" => $idGenres,			
+			"attribute:pa_cast" => $post["attribute:pa_cast"],
+			"attribute:pa_genre" => $post["attribute:pa_genre"],			
 			"post_status" => "publish"
 		));
-		
 
 		// Update post's custom field
 		// var_dump($post);
@@ -249,15 +152,12 @@ add_action("admin_init", function () {
 		update_field('titre_original', $post["post_title"], $post["ID"]);
 		update_field('entry-content', $post["post_content"], $post["ID"]);
 		update_field('casting', $post["attribute:pa_cast"], $post["ID"]);
-		
-		update_field( 'field_60364d57c8199', $idGenres, $post["ID"] );
-		
-		
-		//update_field('field_60364d57c8199',$idGenres, $post["ID"]);
+		update_field('field_60364d57c8199', array(50), $post["ID"]);
 	}
 
 	//Redirection pour clear l'url du &insertion_csv_post afin d'eviter le lancement de la fonction à chaque refresh
-	$url = "http://localhost/wikibifff/wp-admin";
-	//wp_redirect($url);
+
+	$url = "http://localhost/PHP/wikibisLocal/wp-admin/edit.php?post_type=film";
+	wp_redirect($url);
 	exit;
 });

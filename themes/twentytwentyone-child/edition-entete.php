@@ -1,12 +1,10 @@
 
-<?php get_header()?>
-
 <main class="container">
 
-    <div class="row mb-2">
+    <div class="mb-2 row">
 
         <div class="col-md-3">
-            <div class="p-4 mb-3 bg-light rounded">
+            <div class="p-4 mb-3 rounded bg-light">
                 <h4 class="fst-italic">2021 Edition 39</h4>
                 <p class="mb-0">Saw you downtown singing the Blues. Watch you circle the drain. Why don't you let me stop by? Heavy is the head that <em>wears the crown</em>. Yes, we make angels cry, raining down on earth from up above.</p>
             </div>
@@ -32,10 +30,10 @@
         </div>
 
         <div class="col-md-6">
-            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-                <div class="col p-4 d-flex flex-column position-static">
-                    <?php while(have_posts()) : the_post();?>
-                        <h2 class="mb-0"><?php the_title(); ?> </h2>
+            <div class="mb-4 overflow-hidden border rounded shadow-sm row g-0 flex-md-row h-md-250 position-relative">
+                <div class="p-4 col d-flex flex-column position-static">
+                <?php while(have_posts()) : the_post();?>
+                <h2 class="mb-0"><?php the_title(); ?> </h2>
                         <?php the_post_thumbnail('medium'); ?>
                         <p class="mb-auto">
                             <?php the_field('description'); ?>
@@ -43,7 +41,7 @@
                     <?php endwhile;?>
                 </div>
             </div>
-            <div class="row mb-6">
+            <div class="mb-6 row">
                 <div class="col-md-4">
                     <ol>
                         <li><a href="#">Watch Triller</a></li>
@@ -76,7 +74,7 @@
                 </div>
             </div>
 
-            <div class="row mb-6">
+            <div class="mb-6 row">
                 <div class="col-md-4">
                     <ol>
                         <li><a href="#">Film d'ouverture</a></li>
@@ -108,14 +106,14 @@
         </div>
 
         <div class="col-md-3">
-            <div class="p-4 mb-3 bg-light rounded">
+            <div class="p-4 mb-3 rounded bg-light">
                 <h4 class="fst-italic">2021 Edition 39</h4>
                 <p class="mb-0">Saw you downtown singing the Blues. Watch you circle the drain. Why don't you let me stop by? Heavy is the head that <em>wears the crown</em>. Yes, we make angels cry, raining down on earth from up above.</p>
             </div>
 
             <div class="p-4">
                 <h4 class="fst-italic">Archives</h4>
-                <ol class="list-unstyled mb-0">
+                <ol class="mb-0 list-unstyled">
                     <li><a href="#">March 2014</a></li>
                     <li><a href="#">February 2014</a></li>
                     <li><a href="#">January 2014</a></li>
