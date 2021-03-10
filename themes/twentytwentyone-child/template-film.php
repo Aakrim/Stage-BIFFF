@@ -5,9 +5,6 @@
  */
 
 get_header();
-
-
 include('films.php');
-
-
 get_footer();
+?>
