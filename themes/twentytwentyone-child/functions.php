@@ -64,6 +64,24 @@ if(!function_exists('wp_dump')) :
     }
 endif;
 
+
+/* Initialisation de la variable que je souhaites récupérer */
+function wpd_add_query_vars( $qvars ) {
+	$qvars[] = 'edition';
+	return $qvars;
+	
+  }
+  add_filter( 'query_vars', 'wpd_add_query_vars' );
+  
+  /* Initialisation du rewriting de l'URL */
+  function wpd_page_rewrite(){
+	add_rewrite_rule( '^films/([^/]*)?', 'index.php?pagename=films&edition=$matches[1]', 'top' );
+  }
+  add_action( 'init', 'wpd_page_rewrite' );
+  
+  $variable = get_query_var('edition');
+
+
 /**
  * Creation et insertion des posts depuis fichiers CSV 
  */
