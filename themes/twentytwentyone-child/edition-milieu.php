@@ -56,7 +56,6 @@
                                         <p><?php the_field('nom'); ?></p>
                                         <p><?php the_field('prenom'); ?></p>
                                         <p><?php the_field('type_invitation'); ?></p>
-
                                     </a>
                                 </div>
                         </div>

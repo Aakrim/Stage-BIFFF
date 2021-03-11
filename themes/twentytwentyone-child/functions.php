@@ -8,6 +8,19 @@ function theme_register_assets(){
     wp_enqueue_script('bootstrap');
 }
 
+/**
+function capitaine_rewrite_url() {
+
+    add_rewrite_tag( '%film%','([^&]+)' );
+    add_rewrite_tag( '%guest%','([^&]+)' );
+
+    add_rewrite_rule(
+        'edition/([^/]+)/([^/]+)/([^/]+)',
+        'index.php?post_type=edition&guest=$matches[1],&film=$matches[2]', 'top'
+    );
+}
+add_action( 'init', 'capitaine_rewrite_url' );
+**/
 // Exit if accessed directly XD
 if ( !defined( 'ABSPATH' ) ) exit;
 
