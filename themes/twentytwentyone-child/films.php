@@ -18,21 +18,32 @@
 
 
 
- <div class="englobe">
+<div class="englobe">
   <div class="customPrevBtn"><i class="fas fa-chevron-circle-left fa-2x"></i></div>
   <div class="carousel-wrap">
     <div class="owl-carousel">
-      <?php $loop = new WP_Query(array('post_type' => 'film', 'posts_per_page' => 5,    'tax_query' => [
-        'relation' => 'OR',
-        [
-          'taxonomy' => 'genre',
-          'field' => 'slug',
-          'terms' => 'gore'
-        ]
-      ])); ?>
+      <?php
+
+      $variable = get_query_var('edition');
+
+      if ($variable === '') {
+        $loop = new WP_Query(array('post_type' => 'film', 'posts_per_page' => 5));
+      } else {
+
+        $loop = new WP_Query(array('post_type' => 'film', 'posts_per_page' => 5,    'tax_query' => [
+          'relation' => 'OR',
+          [
+            'taxonomy' => 'genre',
+            'field' => 'slug',
+            'terms' => get_query_var('edition')
+          ],
+
+        ]));
+      }
+      ?>
       <?php while ($loop->have_posts()) : $loop->the_post(); ?>
         <div class="item">
-         <span class="titreFilm"> <?php the_field('titre_original'); ?></span>
+          <span class="titreFilm"> <?php the_field('titre_original'); ?></span>
           <a href="<?php the_permalink(); ?>">
             <img style="width:360px; height:500px;" src="<?php the_post_thumbnail(); ?>
           </a>
