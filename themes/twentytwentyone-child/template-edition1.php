@@ -5,13 +5,6 @@
  */
 
 
-/**
-global $wp_query;
-
-$edition = $wp_query->query_vars['film'];
-$guest = $wp_query->query_vars['guest'];
-**/
-
 get_header();
 
 include('edition-entete.php');
