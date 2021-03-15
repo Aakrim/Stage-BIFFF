@@ -12,6 +12,7 @@
 
 
 
+
 <!--
 *intégrer le titre du film dans l'image du carousel, pas au dessus
  -->
@@ -23,7 +24,7 @@
   <div class="carousel-wrap">
     <div class="owl-carousel">
       <?php
-
+      
       $variable = get_query_var('edition');
 
       if ($variable === '') {
@@ -45,12 +46,16 @@
         <div class="item">
           <span class="titreFilm"> <?php the_field('titre_original'); ?></span>
           <a href="<?php the_permalink(); ?>">
-            <img style="width:360px; height:500px;" src="<?php the_post_thumbnail(); ?>
+            <img style="width:360px; height:500px;" src="<?php the_post_thumbnail(); ?> 
           </a>
+         
           </div>
+          
+       
+       
 
 <?php endwhile; ?>
-    
+
     </div>
   </div>
   <div class=" customNextBtn"><i class="fas fa-chevron-circle-right fa-2x"></i>
