@@ -15,16 +15,20 @@
     <div class="customPrevBtn"><i class="fas fa-chevron-circle-left fa-2x"></i></div>
     <div class="carousel-wrap">
         <div class="owl-carousel">
+           <?php $variable = get_query_var('edition');
+            if ($variable === '') {
+            $loop = new WP_Query(array('post_type' => 'guest ', 'posts_per_page' => 5));
+            } else{
+             $loop = new WP_Query(array('post_type' => 'guest', 'posts_per_page' => 5, 'tax_query' => [
 
-            <?php $loop = new WP_Query(array('post_type' => 'guest', 'posts_per_page' => 5, 'tax_query' => [
                 [
                     'taxonomy' => 'guest_type',
                     'field' => 'slug',
-                    'terms' => get_query_var('edition')
+                    'terms' => get_query_var('edition'),
+
                 ],
-
-
-            ])); ?>
+            ])); }
+            ?>
             <?php while ($loop->have_posts()) :
             $loop->the_post(); ?>
             <div class="item">

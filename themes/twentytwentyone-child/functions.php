@@ -5,6 +5,7 @@
 
 function wpd_add_query_vars( $qvars ) {
 $qvars[] = 'edition';
+$qvars[] = 'type';
 return $qvars;
 }
 add_filter( 'query_vars', 'wpd_add_query_vars' );
@@ -12,11 +13,11 @@ add_filter( 'query_vars', 'wpd_add_query_vars' );
 /* Initialisation du rewriting de l'URL */
 
 function wpd_page_rewrite(){
-add_rewrite_rule( '^guests/([^/]*)?', 'index.php?pagename=guests&edition=$matches[1]', 'top' );
+add_rewrite_rule( '^guests/([^/]*)?', 'index.php?pagename=guests&edition=$matches[1]&type=$matches[2]', 'top' );
 }
 add_action( 'init', 'wpd_page_rewrite' );
 $variable = get_query_var('edition');
-
+$variable1 = get_query_var('type');
 
 /**
  * @param WP_Query $query
