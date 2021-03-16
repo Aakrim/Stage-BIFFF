@@ -61,22 +61,24 @@ if ( !defined( 'ABSPATH' ) ) exit;
 // BEGIN ENQUEUE PARENT ACTION
 // AUTO GENERATED - Do not modify or remove comment markers above or below:
 
-if ( !function_exists( 'chld_thm_cfg_locale_css' ) ):
-    function chld_thm_cfg_locale_css( $uri ){
-        if ( empty( $uri ) && is_rtl() && file_exists( get_template_directory() . '/rtl.css' ) )
-            $uri = get_template_directory_uri() . '/rtl.css';
-        return $uri;
-    }
+if (!function_exists('chld_thm_cfg_locale_css')) :
+	function chld_thm_cfg_locale_css($uri)
+	{
+		if (empty($uri) && is_rtl() && file_exists(get_template_directory() . '/rtl.css'))
+			$uri = get_template_directory_uri() . '/rtl.css';
+		return $uri;
+	}
 endif;
-add_filter( 'locale_stylesheet_uri', 'chld_thm_cfg_locale_css' );
-         
-if ( !function_exists( 'child_theme_configurator_css' ) ):
-    function child_theme_configurator_css() {
-        wp_enqueue_style( 'chld_thm_cfg_child', trailingslashit( get_stylesheet_directory_uri() ) . 'style.css', array( 'twenty-twenty-one-style','twenty-twenty-one-style','twenty-twenty-one-print-style' ) );
-    }
+add_filter('locale_stylesheet_uri', 'chld_thm_cfg_locale_css');
+
+if (!function_exists('child_theme_configurator_css')) :
+	function child_theme_configurator_css()
+	{
+		wp_enqueue_style('chld_thm_cfg_child', trailingslashit(get_stylesheet_directory_uri()) . 'style.css', array('twenty-twenty-one-style', 'twenty-twenty-one-style', 'twenty-twenty-one-print-style'));
+	}
 endif;
-add_action( 'wp_enqueue_scripts', 'child_theme_configurator_css', 10 );
-add_action('wp_enqueue_scripts','theme_register_assets');
+add_action('wp_enqueue_scripts', 'child_theme_configurator_css', 10);
+add_action('wp_enqueue_scripts', 'theme_register_assets');
 
 // END ENQUEUE PARENT ACTION
 
@@ -96,36 +98,37 @@ add_action("admin_notices", function () {
 });
 
 
-if(!function_exists('wp_dump')) :
-    function wp_dump(){
-        if(func_num_args() === 1)
-        {
-            $a = func_get_args();
-            echo '<pre>', var_dump( $a[0] ), '</pre><hr>';
-        }
-        else if(func_num_args() > 1)
-            echo '<pre>', var_dump( func_get_args() ), '</pre><hr>';
-        else
-            throw Exception('You must provide at least one argument to this function.');
-    }
+if (!function_exists('wp_dump')) :
+	function wp_dump()
+	{
+		if (func_num_args() === 1) {
+			$a = func_get_args();
+			echo '<pre>', var_dump($a[0]), '</pre><hr>';
+		} else if (func_num_args() > 1)
+			echo '<pre>', var_dump(func_get_args()), '</pre><hr>';
+		else
+			throw Exception('You must provide at least one argument to this function.');
+	}
 endif;
 
 
 /* Initialisation de la variable que je souhaites récupérer */
-function wpd_add_query_vars( $qvars ) {
+function wpd_add_query_vars($qvars)
+{
 	$qvars[] = 'edition';
 	return $qvars;
-	
-  }
-  add_filter( 'query_vars', 'wpd_add_query_vars' );
-  
-  /* Initialisation du rewriting de l'URL */
-  function wpd_page_rewrite(){
-	add_rewrite_rule( '^films/([^/]*)?', 'index.php?pagename=films&edition=$matches[1]', 'top' );
-  }
-  add_action( 'init', 'wpd_page_rewrite' );
-  
-  $variable = get_query_var('edition');
+}
+add_filter('query_vars', 'wpd_add_query_vars');
+
+/* Initialisation du rewriting de l'URL */
+function wpd_page_rewrite()
+{
+	add_rewrite_rule('^films/([^/]*)?', 'index.php?pagename=films&edition=$matches[1]', 'top');
+}
+add_action('init', 'wpd_page_rewrite');
+
+$variable = get_query_var('edition');
+
 
 
 /**
@@ -192,82 +195,38 @@ add_action("admin_init", function () {
 	};
 
 
-	
+
 
 	//On vérifie si le post existe déjà dans la db	
 	$post_exists = function ($post_name) use ($wpdb, $insert_post) {
 
 		//on recup un tableau de tous les posts dans notre custom post type
-		$posts = $wpdb->get_col("SELECT post_name FROM {$wpdb->posts} WHERE post_type = '{$insert_post["custom-post-type"]}'");				
+		$posts = $wpdb->get_col("SELECT post_name FROM {$wpdb->posts} WHERE post_type = '{$insert_post["custom-post-type"]}'");
 
 		//on vérifie si le titre existe dans le tableau
 		return in_array($post_name, $posts);
 	};
-	
+
+	//die(var_dump($posts()));
+
+
 	foreach ($posts() as $post) {
-		
+
 		// Si le post existe déjà , on skip ce post et on passe au suivant
 		if ($post_exists($post["post_name"])) {
 			continue;
 			// en cas d'update, ici <-
 			//si pas d'update, impossible de rajouter des champs, car le test des doublons "continue" le code et skip l'entrée
 		}
-		
+
 		$explodeGenre = explode("|", $post["attribute:pa_genre"]);
-		//var_dump($explodeGenre);
-		
-		
-/*		$idGenres = array (); 
-		//a:3:{i:0;s:2:"70";i:1;s:2:"29";i:2;s:2:"72";}
-		$genres = array (
-			"action" => "70",
-			"adventure" => "29",
-			"animation" => "72",
-			"black comedy" => "57",
-			"crime" => "58",
-			"disaster" => "66",
-			"documentary"=>"69",
-			"dystopia"=>"64",
-			"end of the world" => "54",
-			"fantasy" => "77",
-			"fairytale" => "68",
-			"film noir" => "74",
-			"ghost movie" => "65",
-			"gore" => "51",
-			"horror" => "50",
-			"martial arts" => "71",
-			"monster movie" => "55",
-			"mystery" => "59",
-			"parody" => "76",
-			"post-apocalyptic" => "75",
-			"science-fiction" => "60",
-			"serial killer" => "52",
-			"slasher" => "53",
-			"supernatural" => "61",
-			"surreal" => "63",
-			"thriller" => "56",
-			"time travel" => "67",
-			"vampire" => "73",
-			"zombie" => "62"
-		);
-		
-		
-
-		$genreString = 'a:3:{';
-		
-		foreach($explodeGenre as $k => $g){
-			
-			$genreString .= 'i:'.$k.';s:2:"'.$genres[$g].'";';
-			$idGenres[] = $genres[$g];
-		}
-		$genreString .= '}';
-
-		//var_dump($idGenres);
-*/		
-	
-	
-		$genres_dyn=get_terms("genre");
-		
+		//var_dump($explodeGenre);		
+		$genres_dyn = get_terms(
+			'genre',
+			array(
+				'hide_empty' => false
+			)
+		);		
 		$genres=array();
 		foreach($genres_dyn as $gdyn){
 			$genres[$gdyn->name]=$gdyn->term_id;
@@ -275,8 +234,8 @@ add_action("admin_init", function () {
 		
 		$idGenres=array();
 		foreach($explodeGenre as $g){
-			
-			if (array_key_exists($g, $genres)){
+			//var_dump($g, $genres);
+			if (array_key_exists($g, $genres)){				
 				array_push($idGenres, $genres[$g]);
 			} else {
 				//the taxonomy does not exist --> create it
@@ -285,18 +244,60 @@ add_action("admin_init", function () {
 				array_push($idGenres, $newid["term_id"]);
 			}
 		}
-		
-		wp_dump($idGenres);
-		
-		//DELETE FROM `wp_posts` WHERE `wp_posts`.`ID` > 300;	
-				
-						// Add Featured Image to Post
+
+		//$explodeAnnee = explode ("|", $post["tax:product_cat"]);
+
+		$CompetitionAttr = $post["attribute:pa_competitions"];
+
+		$competition_dyn = get_terms(
+			'compitition',
+			array(
+				'hide_empty' => false
+			)
+		);
+
+		$competition = array();
+		foreach ($competition_dyn as $cdyn) {
+			$competition[$cdyn->name] = $cdyn->term_id;
+		}
+
+		//var_dump($CompetitionAttr);
+
+		$idCompetitions = array();
+		if ($CompetitionAttr !== '') {
+			if (array_key_exists($CompetitionAttr, $competition)) {
+				array_push($idCompetitions, $competition[$CompetitionAttr]);
+			} else {
+				//the taxonomy does not exist --> create it
+				$newid2 = wp_insert_term($CompetitionAttr, "compitition", sanitize_title($CompetitionAttr));
+				array_push($idCompetitions, $newid2["term_id"]);
+			}
+		}
+		//var_dump($CompetitionAttr);
+
+
+
+		//wp_query sur les posts de type edition 
+		//boucle dessus
+		//prendre l'année et l'id
+		//faire tableau e les deux
+
+
+		//wp_dump($idGenres);
+
+		//DELETE FROM `wp_posts` WHERE `wp_posts`.`ID` > 380;	
+
+
+							// Add Featured Image to Post
 		$image_url        = $post["images"]; // Define the image URL here
+		//var_dump( $post["images"]);
+
 		$image_name       = preg_replace( '/[^a-z0-9]/i', '', $post["post_name"])."_poster.jpg";
 		$upload_dir       = wp_upload_dir(); // Set upload folder
 		$image_data       = file_get_contents($image_url); // Get image data
 		$unique_file_name = wp_unique_filename( $upload_dir['path'], $image_name ); // Generate unique name
 		$filename         = basename( $unique_file_name ); // Create image file name
+
 
 		// Check folder permission and define file location
 		if( wp_mkdir_p( $upload_dir['path'] ) ) {
@@ -320,33 +321,38 @@ add_action("admin_init", function () {
 		);
 
 		// Create the attachment
+		
 		$attach_id = wp_insert_attachment( $attachment, $file, $post["ID"] );
-
+	 // var_dump($post["ID"]);
+		
 		// Include image.php
 		require_once(ABSPATH . 'wp-admin/includes/image.php');
-
+		
 		// Define attachment metadata
 		$attach_data = wp_generate_attachment_metadata( $attach_id, $file );
-
+		
 		// Assign metadata to attachment
 		wp_update_attachment_metadata( $attach_id, $attach_data );
-
+		
 		// And finally assign featured image to post
-		set_post_thumbnail( $post["ID"], $attach_id );		
-			
-
+		
+		
+		//var_dump(intval($post["ID"]), $attach_id);
+		
+		//var_dump($image_url);
+		
 		// Insertion du post dans la database
 		$post["ID"] = wp_insert_post(array(
-			"post_title" => $post["post_name"],	
-			//permet de remove le 2015| de 2015|movie	
-			//"product_cat" => substr(strrchr($post["tax:product_cat"],"|"), 1), A VOIR PLUS TARD
-			"post_content" =>$post["post_content"],
+			"post_title" => $post["post_name"],
+			"post_content" => $post["post_content"],
 			"post_type" => $insert_post["custom-post-type"],
-			//"attribute:pa_cast" => $post["attribute:pa_cast"],
-			//"attribute:pa_genre" => $idGenres,			
+			"attribute:pa_cast" => $post["attribute:pa_cast"],
+			
+			//"images" => $image_name,
 			"post_status" => "publish"
 		));
 		
+		set_post_thumbnail($post["ID"], $attach_id );	
 
 		// Update post's custom field
 		// var_dump($post);
@@ -354,11 +360,17 @@ add_action("admin_init", function () {
 		update_field('titre_original', $post["post_title"], $post["ID"]);
 		update_field('entry-content', $post["post_content"], $post["ID"]);
 		update_field('casting', $post["attribute:pa_cast"], $post["ID"]);
-		
-		update_field( 'field_60364d57c8199', $idGenres, $post["ID"] );
-		
-		
-		//update_field('field_60364d57c8199',$idGenres, $post["ID"]);
+		update_field('field_60364d57c8199', $idGenres, $post["ID"]);
+
+
+		$repeater = 'field_6041fb8035075';
+		$value = array(
+			array(
+				'field_6041fb9f35076' => $idCompetitions,
+			),
+
+		);
+		update_field($repeater, $value, $post["ID"]);
 	}
 
 	//Redirection pour clear l'url du &insertion_csv_post afin d'eviter le lancement de la fonction à chaque refresh
