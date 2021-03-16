@@ -1,5 +1,49 @@
 <?php
 
+
+/* Initialisation de la variable que je souhaites récupérer */
+
+function wpd_add_query_vars( $qvars ) {
+$qvars[] = 'edition';
+$qvars[] = 'type';
+return $qvars;
+}
+add_filter( 'query_vars', 'wpd_add_query_vars' );
+
+/* Initialisation du rewriting de l'URL */
+
+function wpd_page_rewrite(){
+add_rewrite_rule( '^guests/([^/]*)?', 'index.php?pagename=guests&edition=$matches[1]&type=$matches[2]', 'top' );
+}
+add_action( 'init', 'wpd_page_rewrite' );
+$variable = get_query_var('edition');
+$variable1 = get_query_var('type');
+
+/**
+ * @param WP_Query $query
+ */
+/**
+function fun_pre_get_posts ($query) {
+    if(is_admin() || !is_home() || !$query->is_main_query()){
+        return;
+    }
+    if(get_query_var('guest_type')===1){
+        $meta_query = $query->get('meta_query', []);
+        $meta_query[] = [
+            'key' => guest_typeMetaBox::META_KEY,
+            'compare' => 'EXISTS',
+        ];
+        $query->set('meta_query',$meta_query);
+    }
+
+}
+function montheme_query_vars($param){
+    $param[] = 'guest_type';
+    return $param;
+}
+add_action('pre_get_posts','fun_pre_get_posts');
+add_filter('query_vars','montheme_query_vars');
+**/
 function theme_register_assets(){
     wp_register_style('bootstrap','https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css');
     wp_deregister_script('jquery');
@@ -9,19 +53,8 @@ function theme_register_assets(){
 	wp_enqueue_style( 'stylecss', get_stylesheet_uri() ); 
 }
 
-/**
-function capitaine_rewrite_url() {
 
-    add_rewrite_tag( '%film%','([^&]+)' );
-    add_rewrite_tag( '%guest%','([^&]+)' );
 
-    add_rewrite_rule(
-        'edition/([^/]+)/([^/]+)/([^/]+)',
-        'index.php?post_type=edition&guest=$matches[1],&film=$matches[2]', 'top'
-    );
-}
-add_action( 'init', 'capitaine_rewrite_url' );
-**/
 // Exit if accessed directly XD
 if ( !defined( 'ABSPATH' ) ) exit;
 
@@ -170,8 +203,6 @@ add_action("admin_init", function () {
 		//on vérifie si le titre existe dans le tableau
 		return in_array($post_name, $posts);
 	};
-
-	//die(var_dump($posts()));
 	
 	foreach ($posts() as $post) {
 		
