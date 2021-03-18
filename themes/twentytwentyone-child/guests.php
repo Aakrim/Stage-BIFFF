@@ -15,27 +15,36 @@
     <div class="customPrevBtn"><i class="fas fa-chevron-circle-left fa-2x"></i></div>
     <div class="carousel-wrap">
         <div class="owl-carousel">
-            <?php
-            $variable1 = get_query_var('edition');
-            $variable2 = get_query_var('type');
 
-            if ($variable2==='' && $variable1==='') {
+            <?php
+                /**
+                    afficher les invités par edition et par type
+                **/
+            $edition = get_query_var('edition');
+            $type_guest = get_query_var('type');
+                //var_dump($variable1);
+                echo($edition);
+                echo('-------------');
+                echo($type_guest);
+            if ($type_guest==='') {
                 $loop = new WP_Query(array('post_type' => 'guest ', 'posts_per_page' => 5));
             } else {
                 $loop = new WP_Query(array(
                         'post_type' => 'guest',
-                        'compare'  => get_the_ID(),
+                        'meta_key'   => 'edition',
+                         'meta_value' => $edition,
+                        'meta_compare'=> 'LIKE',
                         'posts_per_page' => 5,
                         'tax_query' => [
                     [
                         'taxonomy' => 'guest_type',
                         'field' => 'slug',
-                        'terms' => get_query_var('type'),
-                    ],
-                ]));
+                        'terms' => $type_guest,
+                    ]
+                ]
+                       ));
             }
-            var_dump($variable1);
-            var_dump($variable2);
+
             ?>
             <?php while ($loop->have_posts()) :
             $loop->the_post(); ?>

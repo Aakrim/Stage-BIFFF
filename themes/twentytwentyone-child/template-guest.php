@@ -6,8 +6,6 @@
 
 get_header();
 
-
 include('guests.php');
-
 
 get_footer();

@@ -13,7 +13,7 @@ add_filter( 'query_vars', 'wpd_add_query_vars' );
 /* Initialisation du rewriting de l'URL */
 
 function wpd_page_rewrite(){
-add_rewrite_rule( '^guests/([^/]*)?', 'index.php?pagename=guests&edition=$matches[1]&type=$matches[2]', 'top' );
+add_rewrite_rule( '^guests/([^/]*)/([^/]*)/?', 'index.php?pagename=guests&edition=$matches[1]&type=$matches[2]', 'top' );
 }
 add_action( 'init', 'wpd_page_rewrite' );
 
