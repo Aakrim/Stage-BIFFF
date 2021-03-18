@@ -4,9 +4,9 @@
 /* Initialisation de la variable que je souhaites récupérer */
 
 function wpd_add_query_vars( $qvars ) {
-$qvars[] = 'edition';
-$qvars[] = 'type';
-return $qvars;
+    $qvars[] = 'edition';
+    $qvars[] = 'type';
+    return $qvars;
 }
 add_filter( 'query_vars', 'wpd_add_query_vars' );
 
@@ -16,8 +16,9 @@ function wpd_page_rewrite(){
 add_rewrite_rule( '^guests/([^/]*)?', 'index.php?pagename=guests&edition=$matches[1]&type=$matches[2]', 'top' );
 }
 add_action( 'init', 'wpd_page_rewrite' );
-$variable = get_query_var('edition');
-$variable1 = get_query_var('type');
+
+$variable1 = get_query_var('edition');
+$variable2 = get_query_var('type');
 
 /**
  * @param WP_Query $query
