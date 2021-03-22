@@ -199,12 +199,41 @@ add_action("admin_init", function () {
 			}
 		}
 
+		$explodePays = explode("|", $post["attribute:pa_country"]);
+		var_dump($explodePays);		
+		$pays_dyn = get_terms(
+			'pays',
+			array(
+				'hide_empty' => false
+			)
+		);
+
+		$pays = array();
+		foreach ($pays_dyn as $pdyn) {
+			$pays[$pdyn->name] = $pdyn->term_id;
+		}
+
+		$idPays = array();
+		foreach ($explodePays as $p) {
+			//var_dump($g, $genres);
+			if (array_key_exists($p, $pays)) {
+				array_push($idPays, $pays[$p]);
+			} else {
+				//the taxonomy does not exist --> create it
+				$newid4 = wp_insert_term($p, "pays", sanitize_title($p));
+				//wp_dump($newid4);
+				array_push($idPays, $newid4["term_id"]);
+			}
+		}
+	
+
+
 		//$explodeAnnee = explode ("|", $post["tax:product_cat"]);
 
 		$CompetitionAttr = $post["attribute:pa_competitions"];
 
 		$competition_dyn = get_terms(
-			'compitition',
+			'competition',
 			array(
 				'hide_empty' => false
 			)
@@ -223,7 +252,7 @@ add_action("admin_init", function () {
 				array_push($idCompetitions, $competition[$CompetitionAttr]);
 			} else {
 				//the taxonomy does not exist --> create it
-				$newid2 = wp_insert_term($CompetitionAttr, "compitition", sanitize_title($CompetitionAttr));
+				$newid2 = wp_insert_term($CompetitionAttr, "competition", sanitize_title($CompetitionAttr));
 				array_push($idCompetitions, $newid2["term_id"]);
 			}
 		}
@@ -248,7 +277,7 @@ add_action("admin_init", function () {
 		foreach ($edition_dyn as $medyn) {
 			$edition[$medyn->name] = $medyn->term_id;
 		}
-		var_dump($edition);
+		//var_dump($edition);
 		$mapEdition = array();
 
 
@@ -319,7 +348,7 @@ add_action("admin_init", function () {
 			"post_title" => $post["post_name"],
 			"post_content" => $post["post_content"],
 			"post_type" => $insert_post["custom-post-type"],
-			"attribute:pa_cast" => $post["attribute:pa_cast"],
+			"attribute:pa_cast" => $post["attribute:pa_cast"],			
 			//"images" => $image_name,
 			"post_status" => "publish"
 		));
@@ -334,9 +363,31 @@ add_action("admin_init", function () {
 
 		// Update post's custom field
 
+		//modif des "|" en ","		
+		$castingModif = str_replace("|",", ",$post["attribute:pa_cast"]);
+		$directorModif = str_replace("|",", ",$post["attribute:pa_director"]);
+		$distributorModif = str_replace("|",", ",$post["attribute:pa_distributor"]);
+		$producerModif = str_replace("|",", ",$post["attribute:pa_producer"]);
+		$screenplayModif = str_replace("|",", ",$post["attribute:pa_screenplay"]);
+		$soundtracksModif = str_replace("|",", ",$post["attribute:pa_soundtracks"]);
+		$subtitlesModif = str_replace("|",", ",$post["attribute:pa_subtitles"]);
+		
+
+
 		update_field('titre_original', $post["post_title"], $post["ID"]);
 		update_field('entry-content', $post["post_content"], $post["ID"]);
-		update_field('casting', $post["attribute:pa_cast"], $post["ID"]);
+		update_field('casting', $castingModif, $post["ID"]);
+		update_field('field_603f90e6ce939', $directorModif, $post["ID"]);
+		update_field('field_603f94b779937', $distributorModif, $post["ID"]);
+		update_field('field_60587cba53381', $producerModif, $post["ID"]);
+		update_field('field_60589719eb1b7', $screenplayModif, $post["ID"]);
+		update_field('field_6058996df07e8', $soundtracksModif, $post["ID"]);
+		update_field('field_603f8eda0fa62', $subtitlesModif, $post["ID"]);
+		update_field('field_603f87eedc557', $post["attribute:pa_audience"], $post["ID"]);
+		update_field('field_605895fd5de54', $post["attribute:pa_audio"], $post["ID"]);
+		update_field('field_603f868edc555', $post["attribute:pa_premiere"], $post["ID"]);
+		update_field('field_603f871fdc556', $idPays, $post["ID"]);
+		
 		update_field('field_60364d57c8199', $idGenres, $post["ID"]);
 
 		//var_dump($mapEdition[$year]);
@@ -363,6 +414,7 @@ add_action("admin_init", function () {
 			$mapEdition[$year[0]] = $newEditionID;
 		}
 
+	
 
 		update_field('field_603f921144457', $mapEdition[$year[0]], $post["ID"]);
 		$arrayCat = array(get_cat_ID($year[0]));
