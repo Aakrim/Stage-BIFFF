@@ -6,7 +6,6 @@
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
     <script src="https://use.fontawesome.com/826a7e3dce.js"></script>
-
 </head>
 
 <h1>Invités:</h1>
@@ -22,10 +21,6 @@
                 **/
             $edition = get_query_var('edition');
             $type_guest = get_query_var('type');
-                //var_dump($variable1);
-                echo($edition);
-                echo('-------------');
-                echo($type_guest);
             if ($type_guest==='') {
                 $loop = new WP_Query(array('post_type' => 'guest ', 'posts_per_page' => 5));
             } else {
@@ -55,11 +50,6 @@
           </a>
 
           </div>
-
-                    <?php
-                    echo get_query_var('edition');
-                    ?>
-
 <?php endwhile; ?>
 
     </div>

@@ -58,3 +58,23 @@ Updated: 2021-02-15 14:51:53
     z-index:999;
     right:0;
 }
+
+/* button vertical de la page film single */
+.bouton a {
+    display:block;
+    width:100%;
+    line-height:50px;
+    text-align:center;
+    vertical-align:middle;
+    background:red;
+    color:white;
+    text-decoration:none;
+    float:left;
+    margin:2px;
+}
+.bouton li{
+    list-style: none;
+}
+.bouton a:hover {
+    background:darkred;
+}
