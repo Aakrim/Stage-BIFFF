@@ -11,7 +11,9 @@
         if ($posts): ?>
         <ul>
             <div class="row">
-                <?php foreach ($posts as $post): ?>
+                <?php foreach ($posts
+
+                as $post): ?>
                 <div class="col-md-3">
                     <?php if (get_field('participations_aux_competitions')) : ?>
                     <?php setup_postdata($post); ?>
@@ -20,14 +22,14 @@
                         <img style="width:200px ; height:200px;" src="<?php the_post_thumbnail(); ?>
                                  <h5> Competition :   <?php the_terms(get_the_ID(), 'competition'); ?></h5>
                                  <h5> Prix :   <?php the_terms(get_the_ID(), 'prix'); ?></h5>
-                                </div>
+                    </div>
                             <?php endif ?>
-                        </div>
+                </div>
                     <?php endforeach; ?>
             </ul>
             <?php wp_reset_postdata(); ?>
         <?php endif; ?>
-        <div class="invites">
+        <div class=" invites">
                         <ol class="mb-0 list-unstyled">
                             <li><a>Lien vers la liste des films winners de l'édition</a></li>
                         </ol>
@@ -46,7 +48,8 @@
                     if ($posts): ?>
                     <ul>
                         <div class="row">
-                            <?php foreach ($posts as $post):; ?>
+                            <?php foreach ($posts
+                            as $post):; ?>
                             <div class="col-md-3">
                                 <?php setup_postdata($post); ?>
                                 <div class="mb-4 overflow-hidden border rounded shadow-sm row g-0 flex-md-row h-md-250 position-relative">
@@ -55,7 +58,7 @@
                                         <img style="width:200px ; height:200px;" src="<?php the_post_thumbnail(); ?>
                                         <p><?php the_field('nom'); ?></p>
                                         <p><?php the_field('prenom'); ?></p>
-                                        <h5> Type d'invitation :   <?php the_terms(get_the_ID(), 'guest_type'); ?></h5>
+                                        <h5> Type d'invitation :   <?php the_terms(get_the_ID(),'guest_type'); ?></h5>
                                     </a>
                                 </div>
                         </div>
@@ -65,7 +68,7 @@
             <?php wp_reset_postdata(); ?>
         <?php endif; ?>
     </div>
-    <div class="invites">
+    <div class=" invites">
                                         <ol class="mb-0 list-unstyled">
                                             <li><a>Lien vers la liste des invités</a></li>
                                         </ol>

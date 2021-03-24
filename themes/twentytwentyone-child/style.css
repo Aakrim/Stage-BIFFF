@@ -78,3 +78,20 @@ Updated: 2021-02-15 14:51:53
 .bouton a:hover {
     background:darkred;
 }
+
+/* nav taxonomy compétition */
+
+.nav-pills
+{
+    border: 1px solid #e7e7e7;
+    background-color: #f3f3f3;
+    margin-left:auto; margin-right: auto;
+    float: left;
+    text-align: center;
+}
+.nav-item a:hover{
+color: darkred;
+}
+.nav-item a:active{
+    background: #0c88b4;
+}

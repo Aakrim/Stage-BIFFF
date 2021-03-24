@@ -19,20 +19,17 @@
                 <?php if (have_posts()): while (have_posts()) :
                 the_post(); ?>
                 <h4 class="fst-italic"><?php the_field('titre_original'); ?></h4>
-                <img style="width:400px ; height:550px;"
-                     src="https://archives.bifff.net/wp-content/uploads/2015/02/bloodmoon_poster.jpg">
+                <img style="width:400px ; height:450px;"
+                     src="<?php the_post_thumbnail(); ?>
             </div>
             <?php endwhile; ?>
             <?php endif ?>
-            <div class="p-4">
-                <div class="bouton">
-                    <ul>
-                        <li><a href="#">Bande d'annoce</a></li>
-                        <li><a href="#">Liste des invités</a></li>
-                        <li><a href="#">Liste des prix</a></li>
-                    </ul>
-
-                </div>
+                <div class=" bouton">
+                <ul>
+                    <li><a href="#">Bande d'annoce</a></li>
+                    <li><a href="#">Liste des invités</a></li>
+                    <li><a href="#">Liste des prix</a></li>
+                </ul>
             </div>
         </div>
 
@@ -46,38 +43,37 @@
                     <?php endif ?>
                 </div>
                 <?php if (have_posts()): while (have_posts()) : the_post(); ?>
-                    <h3 class="fst-italic" ><p style="text-align: center">Titre: <?php the_field('titre_original'); ?></p></h3>
-                    <h3 class="fst-italic"><p style="text-align: center">Les acteurs: <?php the_field('casting'); ?></p></h3>
-                    <h3 class="fst-italic"><p style="text-align: center">Le genre: <?php the_terms(get_the_ID(), 'genre'); ?></p></h3>
-                    <h3 class="fst-italic"><p style="text-align: center">Le réalisateur: <?php the_field('realisateur'); ?></p></h3>
+                    <table class="table">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Titre</th>
+                            <th scope="col">Edition</th>
+                            <th scope="col">Acteurs</th>
+                            <th scope="col">Genre</th>
+                            <th scope="col">Compétition</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td><?php the_field('titre_original'); ?></td>
+                            <td>
+                                <?php
+                                $editions = get_field('edition');
+                                foreach ($editions as $edition) {
+                                    $edition_name = $edition->post_title;
+                                    echo $edition_name;
+                                }
+                                ?>
+                            </td>
+                            <td><?php the_field('casting'); ?></td>
+                            <td><?php the_terms(get_the_ID(), 'genre'); ?></td>
+                            <td><?php the_terms(get_the_ID(), 'competition'); ?></td>
+                        </tr>
+                        </tbody>
+                    </table>
                 <?php endwhile; ?>
                 <?php endif ?>
-                <?php
-
-                /**
-                 * afficher les invités par edition et par type
-                 **/
-
-                $loop = new WP_Query(array(
-                    'post_type' => 'film',
-                    'posts_per_page' => 3,
-                ));
-                ?>
-
-                <div>
-                    <h3>Article Relatifs: </h3>
-                </div>
-                <?php while ($loop->have_posts()):
-                    $loop->the_post(); ?>
-
-                    <div class="col-md-4">
-                        <h4><?php the_title() ?></h4>
-                        <p><img style="width:170px; height:200px;" src="<?php the_post_thumbnail(); ?>"></p>
-                    </div>
-                <?php endwhile; ?>
             </div>
-
-
         </div>
 
         <div class=" col-md-2">
@@ -107,12 +103,33 @@
                     <li><a href="#">April 2013</a></li>
                 </ol>
             </div>
-
+        </div>
+    </div>
+    <div class="mb-2 row">
+        <div class="col-md-6">
 
         </div>
-
+        <?php $loop = new WP_Query(array('post_type' => 'film', 'posts_per_page' => 3,)); ?>
+        <div class="ab-label">
+            <h3>Article Relatifs: </h3>
+        </div>
+        <?php while ($loop->have_posts()):
+        $loop->the_post(); ?>
+        <div class="col-md-4">
+            <div class="card-group">
+                <div class="card">
+                    <img class="card-img-top" style="width: 350px;height: 300px"
+                         src="<?php the_post_thumbnail('post-thumbnail', ['class' => 'card-img-top', 'alt' => '', 'style' => 'height: auto;']); ?>
+                    <div class=" card-body">
+                    <h5 class="card-title"><?php the_field('titre_original'); ?></h5>
+                    <p class="card-text"><?php the_excerpt(); ?></p>
+                </div>
+            </div>
+        </div>
     </div>
-
+    <?php endwhile; ?>
+    </div>
+    </div>
 </main><!-- /.container -->
 
 <?php get_footer(); ?>
