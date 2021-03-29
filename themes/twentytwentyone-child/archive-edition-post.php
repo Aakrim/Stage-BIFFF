@@ -1,38 +1,57 @@
-<?php
-/**
- * The main template file
- *
- * This is the most generic template file in a WordPress theme
- * and one of the two required files for a theme (the other being style.css).
- * It is used to display a page when nothing more specific matches a query.
- * E.g., it puts together the home page when no home.php file exists.
- *
- * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
- *
- * @package WordPress
- * @subpackage Twenty_Twenty_One
- * @since Twenty Twenty-One 1.0
- */
+<!-- http://localhost/wikibifff/edition-post/  -->
 
-get_header();
+<?php get_header() ?>
+<?php 
+      $term = get_queried_object();
 
-if ( have_posts() ) {
+      $children = get_terms( 'category', array(
+          'annee'    => $term->term_id,
+          'hide_empty' => false
+      ) );
+  
+   //  echo '<li>'. $children .'</li>';
+   //var_dump($children);
 
-    // Load posts loop.
-    while ( have_posts() ) {
-        the_post();
+?>
 
-        get_template_part( 'template-parts/content/content', get_theme_mod( 'display_excerpt_or_full_post', 'excerpt' ) );
-    }
+<div class="container align-items-center">
+    <?php if (have_posts()) : while (have_posts()) : the_post(); ?>      
+   
+            <div class="row p-5">
+                <div class="col-sm content">   
+                    <?php 
+                      if(intval(the_terms( get_the_ID() , 'category')) % 2 === 0)  {
+                          ?>
+                    <div class="boxLeft mb-5"><h4 class="fst-italic"><?php the_field('nom'); ?></h4> </div>
+                    <?php } ?>
 
-    // Previous/next page navigation.
-    twenty_twenty_one_the_posts_navigation();
+                </div>
+                <div class="col-sm-auto">
+                    <div class="timeline-bar"></div>
+                    <div class="years"><?php the_terms( get_the_ID() , 'category'); ?></div>
+                    <div class="years"><?php the_terms( get_the_ID() , 'category'); ?></div>
+                </div>  
+                <div class="col-sm content">
+                <?php 
+                      if( intval(the_terms( get_the_ID() , 'category')) % 2 !== 0)  {
+                          ?>
+                    <div class="boxLeft mb-5"><h4 class="fst-italic"><?php the_field('nom'); ?></h4> </div>
+                    <?php } ?>
+                   
+                </div>
+            </div>
 
-} else {
+        <?php endwhile; ?>
+    <?php endif ?>
+</div>
 
-    // If no content, include the "No posts found" template.
-    get_template_part( 'template-parts/content/content-none' );
 
-}
 
-get_footer();
+
+
+
+
+
+
+
+<?php get_footer() ?>
