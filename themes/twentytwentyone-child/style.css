@@ -75,7 +75,7 @@ body,html{
 .boxLeft, .boxRight{
     display:flex;
     position:relative;
-    width:700px;
+    max-width:700px;
     height:33vh;
     background-color:white;
     margin: 0 auto;
@@ -99,45 +99,6 @@ body,html{
   color:black;
   font-weight: bold;
 }
-
-
-
-/*
-.boxLeft:before {
-  content: "";
-  position: absolute;
-  width: 0;
-  height: 0;
-  right: -84px;
-  top: 20px;
-  bottom: auto;
-  border-style: solid;
-  border-width: 24px 60px 24px 24px;
-  border-color: transparent white transparent transparent;
-  transform: rotate(180deg);
-  z-index:1;
-  box-shadow: 1px 1px 6px 1px rgba(0,0,0,0.65);
-}
-
-
-.boxRight:before{
-  
-  content: "";
-  position: absolute;
-  left: -83px;
-  top: 230px;
-  bottom: auto;
-  border-style: solid;
-  width: 0;
-  height: 0;
-  border-width: 24px 60px 24px 24px;
-  border-color: transparent white transparent transparent;
-  z-index: 1;
-  box-shadow: 1px 1px 6px 1px rgba(0,0,0,0.65);
- 
-}
-*/
-
 
 .svgTriangle{
   position:absolute;  
@@ -165,6 +126,7 @@ body,html{
 
 .box-container{
   display:flex;
+  min-height:100%;
 }
 .box-img{
  
@@ -180,6 +142,10 @@ body,html{
   display:flex;
   flex-direction:column;
   padding: 1px 10px;
+}
+.box-descr p{
+  height:300px;
+  overflow: hidden;
 }
 .yearNom, .yearNom a{ 
   text-decoration:none;
@@ -200,30 +166,35 @@ body,html{
   text-decoration: none;
   display: inline-block;
   font-size: 16px;
-  cursor: pointer;
-  
+  cursor: pointer;  
   /* justify-content: space-between; */
   bottom: 0;
   right:0;
-  margin-bottom: 9px;
+  margin-bottom: 8px;
 }
  
 .imgHeight{
   height:100%  !important;
 }
 
-@media only screen and (min-width: 1400px) {
-  .timeLine .timeLineLine{
-    left: 50%;
+
+
+
+@media all and (max-width: 1400px) {
+ 
+  .timeline-bar, .years {
+    display:none;
   }
-  .timeLine .content .yearMarkdown{
-    left: 0px;
-    right: auto;
-    top: 60%;
+
+  .mainRow{    
+    display: flex;
+    flex-direction: column;
+    
+   
   }
-  .timeLine .content:nth-child(2n) .yearMarkdown{
-    left: auto;
-    right: 0px;
-    top: 10%;
+
+  .svgTriangle {  
+    display: none;
   }
 }
+

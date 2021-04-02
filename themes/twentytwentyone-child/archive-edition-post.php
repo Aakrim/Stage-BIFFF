@@ -10,7 +10,7 @@
 
             <?php if ($i % 2 == 0) { ?>
             
-                <div class="row">
+                <div class="row mainRow">
                     <div class="col-sm content">
                         <div class="boxLeft mb-3">
                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 184.06 129.84" style="enable-background:new 0 0 184.06 129.84;" xml:space="preserve" class="svgTriangle">
@@ -40,7 +40,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-auto text-center d-flex justify-content-center flex-wrap ">
+                    <div class="col-sm-auto text-center d-flex justify-content-center flex-wrap">
                         <div class="timeline-bar"></div>
                         <div class="years">
                             <?php the_terms(get_the_ID(), 'category'); ?>
