@@ -48,7 +48,7 @@
                         <tr>
                             <th scope="col">Titre</th>
                             <th scope="col">Edition</th>
-                            <th scope="col">Acteurs</th>
+                            <th scope="col">Casting</th>
                             <th scope="col">Genre</th>
                             <th scope="col">Compétition</th>
                         </tr>

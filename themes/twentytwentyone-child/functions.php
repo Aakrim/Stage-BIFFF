@@ -6,6 +6,7 @@
 function wpd_add_query_vars( $qvars ) {
     $qvars[] = 'edition';
     $qvars[] = 'type';
+    $qvars[] = 'competition';
     return $qvars;
 }
 add_filter( 'query_vars', 'wpd_add_query_vars' );
@@ -14,12 +15,16 @@ add_filter( 'query_vars', 'wpd_add_query_vars' );
 
 function wpd_page_rewrite(){
 add_rewrite_rule( '^guests/([^/]*)/([^/]*)/?', 'index.php?pagename=guests&edition=$matches[1]&type=$matches[2]', 'top' );
+//add_rewrite_rule('^competition','index.php?competition=0&edition=0','top');
+//add_rewrite_rule('^competition/([^/]*)','index.php?competition=$matches[1]&edition=0','top');
+add_rewrite_rule('^competition/([^/]*)/([^/]*)/?','index.php?competition=$matches[1]&edition=$matches[2]','top');
+
 }
 add_action( 'init', 'wpd_page_rewrite' );
 
 $variable1 = get_query_var('edition');
 $variable2 = get_query_var('type');
-
+$variable3 = get_query_var('competition');
 function theme_register_assets(){
     wp_register_style('bootstrap','https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css');
     wp_deregister_script('jquery');

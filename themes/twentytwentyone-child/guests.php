@@ -14,7 +14,6 @@
     <div class="customPrevBtn"><i class="fas fa-chevron-circle-left fa-2x"></i></div>
     <div class="carousel-wrap">
         <div class="owl-carousel">
-
             <?php
                 /**
                     afficher les invités par edition et par type
@@ -39,10 +38,8 @@
                 ]
                        ));
             }
-
             ?>
-            <?php while ($loop->have_posts()) :
-            $loop->the_post(); ?>
+            <?php while ($loop->have_posts()) : $loop->the_post(); ?>
             <div class="item">
                 <span class="titreFilm"> <?php the_title(); ?></span>
                 <a href="<?php the_permalink(); ?>">
