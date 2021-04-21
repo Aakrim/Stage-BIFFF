@@ -6,6 +6,7 @@
 function wpd_add_query_vars( $qvars ) {
     $qvars[] = 'edition';
     $qvars[] = 'type';
+    $qvars[] = 'competition';
     return $qvars;
 }
 add_filter( 'query_vars', 'wpd_add_query_vars' );
@@ -13,45 +14,24 @@ add_filter( 'query_vars', 'wpd_add_query_vars' );
 /* Initialisation du rewriting de l'URL */
 
 function wpd_page_rewrite(){
-add_rewrite_rule( '^guests/([^/]*)?', 'index.php?pagename=guests&edition=$matches[1]&type=$matches[2]', 'top' );
+add_rewrite_rule( '^guests/([^/]*)/([^/]*)/?', 'index.php?pagename=guests&edition=$matches[1]&type=$matches[2]', 'top' );
+//add_rewrite_rule('^competition','index.php?competition=0&edition=0','top');
+//add_rewrite_rule('^competition/([^/]*)','index.php?competition=$matches[1]&edition=0','top');
+add_rewrite_rule('^competition/([^/]*)/([^/]*)/?','index.php?competition=$matches[1]&edition=$matches[2]','top');
+
 }
 add_action( 'init', 'wpd_page_rewrite' );
 
 $variable1 = get_query_var('edition');
 $variable2 = get_query_var('type');
-
-/**
- * @param WP_Query $query
- */
-/**
-function fun_pre_get_posts ($query) {
-    if(is_admin() || !is_home() || !$query->is_main_query()){
-        return;
-    }
-    if(get_query_var('guest_type')===1){
-        $meta_query = $query->get('meta_query', []);
-        $meta_query[] = [
-            'key' => guest_typeMetaBox::META_KEY,
-            'compare' => 'EXISTS',
-        ];
-        $query->set('meta_query',$meta_query);
-    }
-
-}
-function montheme_query_vars($param){
-    $param[] = 'guest_type';
-    return $param;
-}
-add_action('pre_get_posts','fun_pre_get_posts');
-add_filter('query_vars','montheme_query_vars');
-**/
+$variable3 = get_query_var('competition');
 function theme_register_assets(){
     wp_register_style('bootstrap','https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css');
     wp_deregister_script('jquery');
     wp_register_script('bootstrap','https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js');
     wp_enqueue_style('bootstrap');
     wp_enqueue_script('bootstrap');
-	wp_enqueue_style( 'stylecss', get_stylesheet_uri() ); 
+    wp_enqueue_style('stylecss', get_stylesheet_uri());
 }
 
 
@@ -90,13 +70,14 @@ add_action('wp_enqueue_scripts', 'theme_register_assets');
  * Ajout du bouton "insert Post" pour admin
  */
 add_action("admin_notices", function () {
-	echo "<div class='updated'>";
-	echo "<p>";
-	echo "To insert the posts into the database, click the button to the right.";
-	echo "<a class='button button-primary' style='margin:0.25em 1em' href='{$_SERVER["REQUEST_URI"]}&insertion_csv_post'>Insert Posts</a>";
-	echo "</p>";
-	echo "</div>";
+    echo "<div class='updated'>";
+    echo "<p>";
+    echo "To insert the posts into the database, click the button to the right.";
+    echo "<a class='button button-primary' style='margin:0.25em 1em' href='{$_SERVER["REQUEST_URI"]}&insertion_csv_post'>Insert Posts</a>";
+    echo "</p>";
+    echo "</div>";
 });
+
 
 
 if (!function_exists('wp_dump')) :
@@ -135,6 +116,7 @@ $variable = get_query_var('edition');
 /**
  * Creation et insertion des posts depuis fichiers CSV 
  */
+
 add_action("admin_init", function () {
 	global $wpdb;
 
@@ -162,51 +144,12 @@ add_action("admin_init", function () {
 			if (!is_readable($file)) {
 				chmod($file, 0744);
 			}
-
-			//On check si le fichier est writable, puis on l'ouvre en mode 'read only' 
-			if (is_readable($file) && $_file = fopen($file, "r")) {
-
-				// To sum this part up, all it really does is go row by
-				//  row, column by column, saving all the data
-				$post = array();
-
-				// On recup la premiere ligne du csv (headers)
-				$header = fgetcsv($_file);
-
-				while ($row = fgetcsv($_file)) {
-
-					foreach ($header as $i => $key) {
-						$post[$key] = $row[$i];
-					}
-
-					$data[] = $post;
-				}
-
-				fclose($_file);
-			} else {
-				$errors[] = "File '$file' could not be opened. Check the file's permissions to make sure it's readable by your server.";
-			}
-		}
-
-		if (!empty($errors)) {
-			echo $errors;
-		}
-
-		return $data;
-	};
-
-
-
-
-	//On vérifie si le post existe déjà dans la db	
-	$post_exists = function ($post_name) use ($wpdb, $insert_post) {
-
 		//on recup un tableau de tous les posts dans notre custom post type
 		$posts = $wpdb->get_col("SELECT post_name FROM {$wpdb->posts} WHERE post_type = '{$insert_post["custom-post-type"]}'");
 
 		//on vérifie si le titre existe dans le tableau
 		return in_array($post_name, $posts);
-	};
+		};
 
 	//die(var_dump($posts()));
 
@@ -493,4 +436,5 @@ add_action("admin_init", function () {
 	$url = "http://localhost/wikibifff/wp-admin";
 	//wp_redirect($url);
 	exit;
+
 });

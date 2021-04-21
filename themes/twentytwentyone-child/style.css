@@ -62,10 +62,7 @@ body,html{
     position:absolute;
     z-index:999;
     right:0;
-<<<<<<< HEAD
 }
-=======
-  }
 
 
 
@@ -153,6 +150,7 @@ body,html{
   height:300px;
   overflow: hidden;
 }
+
 .yearNom, .yearNom a{ 
   text-decoration:none;
   font-size:26px;
@@ -204,4 +202,42 @@ body,html{
   }
 }
 
->>>>>>> MaxBranch
+
+
+/* button vertical de la page film single */
+.bouton a {
+    display:block;
+    width:100%;
+    line-height:50px;
+    text-align:center;
+    vertical-align:middle;
+    background:red;
+    color:white;
+    text-decoration:none;
+    float:left;
+    margin:2px;
+}
+.bouton li{
+    list-style: none;
+}
+.bouton a:hover {
+    background:darkred;
+}
+
+/* nav taxonomy compétition */
+
+.nav-pills
+{
+    border: 1px solid #e7e7e7;
+    background-color: #f3f3f3;
+    margin-left:auto; margin-right: auto;
+    float: left;
+    text-align: center;
+}
+.nav-item a:hover{
+color: darkred;
+}
+.nav-item a:active{
+    background: #0c88b4;
+}
+
