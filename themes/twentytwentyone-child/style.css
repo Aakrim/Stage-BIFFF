@@ -10,7 +10,9 @@ Version: 1.1.1613397113
 Updated: 2021-02-15 14:51:53
 
 */
-
+body,html{
+  background-color: rgb(238, 235, 235);
+}
 .englobe{
     display:flex;
     align-items: center;
@@ -60,4 +62,146 @@ Updated: 2021-02-15 14:51:53
     position:absolute;
     z-index:999;
     right:0;
+<<<<<<< HEAD
 }
+=======
+  }
+
+
+
+  .timeline-bar{
+    background-color:black;
+    width:1px;
+    height: 375px;
+    margin: 0 auto;
+    position:absolute;
+  
+}
+
+.boxLeft, .boxRight{
+    display:flex;
+    position:relative;
+    max-width:700px;
+    height:33vh;
+    background-color:white;
+    margin: 0 auto;
+    z-index:2;
+    box-shadow: 1px 1px 6px 1px rgba(0,0,0,0.65);
+}
+
+.years{
+    display:flex;
+    justify-content: center;
+    position: relative;       
+    background: rgb(238, 235, 235);
+    width:100%;
+    height:70px;     
+    line-height:70px;
+
+}
+.years a{
+  text-decoration:none;
+  font-size:20px;
+  color:black;
+  font-weight: bold;
+}
+
+.svgTriangle{
+  position:absolute;  
+  height:20%;
+  transform:rotate(180deg);
+  left:100%;
+
+}
+.svgTriangle2{
+  position:absolute;  
+  height:20%;  
+  right:100%;
+  top:60%;
+
+}
+.svgTriangle polygon{
+  fill:#FFF;
+  filter: url(#shadow1);
+}
+.svgTriangle2 polygon{
+  fill:#FFF;
+  filter: url(#shadow2);
+}
+
+
+.box-container{
+  display:flex;
+  min-height:100%;
+}
+.box-img{
+ 
+  width:30%;
+  border:black 1px solid;
+}
+.box-img img{
+  height:100%;
+}
+.box-descr{
+  
+  width:70%;
+  display:flex;
+  flex-direction:column;
+  padding: 1px 10px;
+}
+.box-descr p{
+  height:300px;
+  overflow: hidden;
+}
+.yearNom, .yearNom a{ 
+  text-decoration:none;
+  font-size:26px;
+  color:black;
+  font-weight: bold;
+}
+
+.box-button{  
+  background-color: #d60606;
+  position: absolute;
+  border: none;
+  width: 200px;
+  color: white;
+  padding: 10px 32px;
+  margin-right:10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;  
+  /* justify-content: space-between; */
+  bottom: 0;
+  right:0;
+  margin-bottom: 8px;
+}
+ 
+.imgHeight{
+  height:100%  !important;
+}
+
+
+
+
+@media all and (max-width: 1400px) {
+ 
+  .timeline-bar, .years {
+    display:none;
+  }
+
+  .mainRow{    
+    display: flex;
+    flex-direction: column;
+    
+   
+  }
+
+  .svgTriangle {  
+    display: none;
+  }
+}
+
+>>>>>>> MaxBranch

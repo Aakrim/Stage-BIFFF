@@ -227,31 +227,60 @@ add_action("admin_init", function () {
 			array(
 				'hide_empty' => false
 			)
-		);		
-		$genres=array();
-		foreach($genres_dyn as $gdyn){
-			$genres[$gdyn->name]=$gdyn->term_id;
+		);
+		$genres = array();
+		foreach ($genres_dyn as $gdyn) {
+			$genres[$gdyn->name] = $gdyn->term_id;
 		}
-		
-		$idGenres=array();
-		foreach($explodeGenre as $g){
+
+		$idGenres = array();
+		foreach ($explodeGenre as $g) {
 			//var_dump($g, $genres);
-			if (array_key_exists($g, $genres)){				
+			if (array_key_exists($g, $genres)) {
 				array_push($idGenres, $genres[$g]);
 			} else {
 				//the taxonomy does not exist --> create it
-				$newid=wp_insert_term($g, "genre", sanitize_title($g));
+				$newid = wp_insert_term($g, "genre", sanitize_title($g));
 				wp_dump($newid);
 				array_push($idGenres, $newid["term_id"]);
 			}
 		}
+
+		$explodePays = explode("|", $post["attribute:pa_country"]);
+		var_dump($explodePays);		
+		$pays_dyn = get_terms(
+			'pays',
+			array(
+				'hide_empty' => false
+			)
+		);
+
+		$pays = array();
+		foreach ($pays_dyn as $pdyn) {
+			$pays[$pdyn->name] = $pdyn->term_id;
+		}
+
+		$idPays = array();
+		foreach ($explodePays as $p) {
+			//var_dump($g, $genres);
+			if (array_key_exists($p, $pays)) {
+				array_push($idPays, $pays[$p]);
+			} else {
+				//the taxonomy does not exist --> create it
+				$newid4 = wp_insert_term($p, "pays", sanitize_title($p));
+				//wp_dump($newid4);
+				array_push($idPays, $newid4["term_id"]);
+			}
+		}
+	
+
 
 		//$explodeAnnee = explode ("|", $post["tax:product_cat"]);
 
 		$CompetitionAttr = $post["attribute:pa_competitions"];
 
 		$competition_dyn = get_terms(
-			'compitition',
+			'competition',
 			array(
 				'hide_empty' => false
 			)
@@ -270,99 +299,185 @@ add_action("admin_init", function () {
 				array_push($idCompetitions, $competition[$CompetitionAttr]);
 			} else {
 				//the taxonomy does not exist --> create it
-				$newid2 = wp_insert_term($CompetitionAttr, "compitition", sanitize_title($CompetitionAttr));
+				$newid2 = wp_insert_term($CompetitionAttr, "competition", sanitize_title($CompetitionAttr));
 				array_push($idCompetitions, $newid2["term_id"]);
 			}
 		}
 		//var_dump($CompetitionAttr);
 
+		//var_dump($explodeGenre);		
 
 
-		//wp_query sur les posts de type edition 
-		//boucle dessus
-		//prendre l'année et l'id
-		//faire tableau e les deux
+		$year = explode("|movie", $post["tax:product_cat"]);
+		//var_dump($year[0]);
+		$editionPost = new WP_Query(array('post_type' => 'edition-post'));
+
+		$edition_dyn = get_terms(
+			'category',
+			array(
+				'hide_empty' => false
+			)
+		);
+		//var_dump($edition_dyn);
+
+		$edition = array();
+		foreach ($edition_dyn as $medyn) {
+			$edition[$medyn->name] = $medyn->term_id;
+		}
+		//var_dump($edition);
+		$mapEdition = array();
 
 
-		//wp_dump($idGenres);
+
+		if ($editionPost->have_posts()) {
+			while ($editionPost->have_posts()) {
+				$editionPost->the_post();
+				$postCourant = get_the_ID();
+				$CategoryAllStats = (get_the_category($postCourant));
+				//var_dump($CategoryAllStats);
+
+				if (!empty($CategoryAllStats)) {
+					$yearCourant =  $CategoryAllStats[0]->cat_name;
+					// array_push($mapEdition, $postCourant, $yearCourant);	
+					$mapEdition[$yearCourant] = $postCourant;
+				}
+				wp_reset_postdata();
+			}
+		}
 
 		//DELETE FROM `wp_posts` WHERE `wp_posts`.`ID` > 380;	
 
-
-							// Add Featured Image to Post
+		// Add Featured Image to Post
 		$image_url        = $post["images"]; // Define the image URL here
-		//var_dump( $post["images"]);
-
-		$image_name       = preg_replace( '/[^a-z0-9]/i', '', $post["post_name"])."_poster.jpg";
+		$image_name       = preg_replace('/[^a-z0-9]/i', '', $post["post_name"]) . "_poster.jpg";
 		$upload_dir       = wp_upload_dir(); // Set upload folder
 		$image_data       = file_get_contents($image_url); // Get image data
-		$unique_file_name = wp_unique_filename( $upload_dir['path'], $image_name ); // Generate unique name
-		$filename         = basename( $unique_file_name ); // Create image file name
-
+		$unique_file_name = wp_unique_filename($upload_dir['path'], $image_name); // Generate unique name
+		$filename         = basename($unique_file_name); // Create image file name
 
 		// Check folder permission and define file location
-		if( wp_mkdir_p( $upload_dir['path'] ) ) {
+		if (wp_mkdir_p($upload_dir['path'])) {
 			$file = $upload_dir['path'] . '/' . $filename;
 		} else {
 			$file = $upload_dir['basedir'] . '/' . $filename;
 		}
 
 		// Create the image  file on the server
-		file_put_contents( $file, $image_data );
+		file_put_contents($file, $image_data);
 
 		// Check image file type
-		$wp_filetype = wp_check_filetype( $filename, null );
+		$wp_filetype = wp_check_filetype($filename, null);
 
 		// Set attachment data
 		$attachment = array(
 			'post_mime_type' => $wp_filetype['type'],
-			'post_title'     => sanitize_file_name( $filename ),
+			'post_title'     => sanitize_file_name($filename),
 			'post_content'   => '',
 			'post_status'    => 'inherit'
 		);
 
 		// Create the attachment
-		
-		$attach_id = wp_insert_attachment( $attachment, $file, $post["ID"] );
-	 // var_dump($post["ID"]);
-		
+
+		$attach_id = wp_insert_attachment($attachment, $file, $post["ID"]);
+		// var_dump($post["ID"]);
+
 		// Include image.php
 		require_once(ABSPATH . 'wp-admin/includes/image.php');
-		
+
 		// Define attachment metadata
-		$attach_data = wp_generate_attachment_metadata( $attach_id, $file );
-		
+		$attach_data = wp_generate_attachment_metadata($attach_id, $file);
+
 		// Assign metadata to attachment
-		wp_update_attachment_metadata( $attach_id, $attach_data );
-		
-		// And finally assign featured image to post
-		
-		
-		//var_dump(intval($post["ID"]), $attach_id);
-		
-		//var_dump($image_url);
-		
+		wp_update_attachment_metadata($attach_id, $attach_data);
+
 		// Insertion du post dans la database
 		$post["ID"] = wp_insert_post(array(
 			"post_title" => $post["post_name"],
 			"post_content" => $post["post_content"],
 			"post_type" => $insert_post["custom-post-type"],
-			"attribute:pa_cast" => $post["attribute:pa_cast"],
-			
+			"attribute:pa_cast" => $post["attribute:pa_cast"],			
 			//"images" => $image_name,
 			"post_status" => "publish"
 		));
-		
-		set_post_thumbnail($post["ID"], $attach_id );	
+
+		//test si l'année existe dans $mapEdition
+		//si existe pas, creer nouveau post de type edition
+		//associé l'année (setCategory sur le post edition)
+		//ce nouveau post edition aura un ID que je devrais utiliser dans le update field
+
+
+		set_post_thumbnail($post["ID"], $attach_id);
 
 		// Update post's custom field
-		// var_dump($post);
+
+		//modif des "|" en ","		
+		$castingModif = str_replace("|",", ",$post["attribute:pa_cast"]);
+		$directorModif = str_replace("|",", ",$post["attribute:pa_director"]);
+		$distributorModif = str_replace("|",", ",$post["attribute:pa_distributor"]);
+		$producerModif = str_replace("|",", ",$post["attribute:pa_producer"]);
+		$screenplayModif = str_replace("|",", ",$post["attribute:pa_screenplay"]);
+		$soundtracksModif = str_replace("|",", ",$post["attribute:pa_soundtracks"]);
+		$subtitlesModif = str_replace("|",", ",$post["attribute:pa_subtitles"]);
+		
+
 
 		update_field('titre_original', $post["post_title"], $post["ID"]);
 		update_field('entry-content', $post["post_content"], $post["ID"]);
-		update_field('casting', $post["attribute:pa_cast"], $post["ID"]);
+		update_field('casting', $castingModif, $post["ID"]);
+		update_field('field_603f90e6ce939', $directorModif, $post["ID"]);
+		update_field('field_603f94b779937', $distributorModif, $post["ID"]);
+		update_field('field_60587cba53381', $producerModif, $post["ID"]);
+		update_field('field_60589719eb1b7', $screenplayModif, $post["ID"]);
+		update_field('field_6058996df07e8', $soundtracksModif, $post["ID"]);
+		update_field('field_603f8eda0fa62', $subtitlesModif, $post["ID"]);
+		update_field('field_603f87eedc557', $post["attribute:pa_audience"], $post["ID"]);
+		update_field('field_605895fd5de54', $post["attribute:pa_audio"], $post["ID"]);
+		update_field('field_603f868edc555', $post["attribute:pa_premiere"], $post["ID"]);
+		update_field('field_603f871fdc556', $idPays, $post["ID"]);
+		
 		update_field('field_60364d57c8199', $idGenres, $post["ID"]);
 
+		//var_dump($mapEdition[$year]);
+		//var_dump($mapEdition);
+		//var_dump($year);
+
+		if (!array_key_exists($year[0], $mapEdition)) {
+			$newEditionID = wp_insert_post(array(
+				"post_title" => "Edition" . $year[0],
+				"post_type" => "edition-post",
+				"post_status" => "publish"
+			));
+			if (get_cat_ID($year[0]) == 0) {
+				$newid3 = wp_insert_term($year[0], 'category', $args = array(
+					'parent' => 40
+				));
+				// var_dump($newid3);
+				// array_push($mapEdition, $newid3["term_id"]);
+				wp_set_post_categories($newEditionID, array($newid3));
+			} else {
+				wp_set_post_categories($newEditionID, array(get_cat_ID($year[0])));
+			}
+
+			$mapEdition[$year[0]] = $newEditionID;
+		}
+
+	
+
+		update_field('field_603f921144457', $mapEdition[$year[0]], $post["ID"]);
+		$arrayCat = array(get_cat_ID($year[0]));
+		//var_dump($arrayCat);
+		wp_set_post_categories($post["ID"], $arrayCat);
+
+
+
+		// update_field('field_6040fa15c7638', $year, $post["ID"]);
+		// $repeaterBis = 'field_603f921144457';
+		// $value = array(
+		// 	array(
+		// 		'field_603f921144457' => $year,
+		// 	),
+		// );
+		// update_field($repeaterBis, $value, $post["ID"]);
 
 		$repeater = 'field_6041fb8035075';
 		$value = array(
