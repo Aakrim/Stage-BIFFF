@@ -95,22 +95,22 @@ endif;
 
 
 /* Initialisation de la variable que je souhaites récupérer */
-function wpd_add_query_vars($qvars)
+/*function wpd_add_query_vars($qvars)
 {
 	$qvars[] = 'edition';
 	return $qvars;
 }
-add_filter('query_vars', 'wpd_add_query_vars');
+add_filter('query_vars', 'wpd_add_query_vars');*/
 
 /* Initialisation du rewriting de l'URL */
-function wpd_page_rewrite()
+/*function wpd_page_rewrite()
 {
 	add_rewrite_rule('^films/([^/]*)?', 'index.php?pagename=films&edition=$matches[1]', 'top');
 }
 add_action('init', 'wpd_page_rewrite');
 
 $variable = get_query_var('edition');
-
+*/
 
 
 /**
@@ -123,7 +123,6 @@ add_action("admin_init", function () {
 	if (!isset($_GET["insertion_csv_post"])) {
 		return;
 	}
-
 
 	$insert_post = array(
 		"custom-field" => "post_attachment",
@@ -150,9 +149,9 @@ add_action("admin_init", function () {
 		//on vérifie si le titre existe dans le tableau
 		return in_array($post_name, $posts);
 		};
+	};
 
 	//die(var_dump($posts()));
-
 
 	foreach ($posts() as $post) {
 
