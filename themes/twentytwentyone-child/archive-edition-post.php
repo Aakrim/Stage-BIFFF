@@ -27,7 +27,7 @@
             
                             <div class="box-container p-2">
                                 <div class="box-img">
-                                    <img src=<?php the_post_thumbnail('full', array('class' => 'imgHeight')); ?>
+                                    <img src=<?php the_post_thumbnail('full', array('class' => 'imgHeight')); ?> >
                                 </div>
                                 <div class="box-descr">
                            

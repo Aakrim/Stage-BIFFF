@@ -43,6 +43,9 @@
                     <?php endif ?>
                 </div>
                 <?php if (have_posts()): while (have_posts()) : the_post(); ?>
+
+                    <?php        $editions = get_field('edition');
+                    var_dump($editions); ?>
                     <table class="table">
                         <thead class="thead-dark">
                         <tr>
@@ -59,6 +62,7 @@
                             <td>
                                 <?php
                                 $editions = get_field('edition');
+
                                 foreach ($editions as $edition) {
                                     $edition_name = $edition->post_title;
                                     echo $edition_name;
