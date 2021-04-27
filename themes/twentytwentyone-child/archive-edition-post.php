@@ -27,14 +27,14 @@
             
                             <div class="box-container p-2">
                                 <div class="box-img">
-                                    <img src=<?php the_post_thumbnail('full', array('class' => 'imgHeight')); ?> >
+                                    <img src=<?php the_post_thumbnail('full', array('class' => 'imgHeight')); ?>
                                 </div>
                                 <div class="box-descr">
                            
 
                                     <h4 class="fst yearNom"><?php the_terms(get_the_ID(), 'category'); ?>-<?php the_field('nom'); ?></h4>
                                     <p><?php the_field('description'); ?></p>
-                                    <a href="#" class="box-button">CTA</a>
+                                    <a href="<?php the_permalink(); ?>" class="box-button">CTA</a>
                                 </div>
 
                             </div>
