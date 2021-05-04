@@ -6,5 +6,6 @@
 
 
 include('home.php');
+include('footer.php');
 
 ?>

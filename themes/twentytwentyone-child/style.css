@@ -191,7 +191,7 @@ body,html{
 }
  
 .imgHeight{
-  height:100%  !important;
+  height:100% !important;
 }
 
 .containerHome{
@@ -303,6 +303,73 @@ body,html{
     font-weight:bold;
 }
 
+.singleFilmContainer{
+    display:flex;
+    width:100%;
+
+}
+
+
+.singleFilmLeft{
+    display:flex;
+    width:30%;
+    flex-direction:column;
+}
+
+.singleFilmImg{
+    margin-bottom:10px;
+}
+.singleFilmButtonBox{
+    width:100%;
+    display:flex;
+    flex-direction: column;
+    align-items:center;
+
+}
+
+.singleFilmButton{
+    background-color: #d60606;
+    border: none;
+    width: 100%;
+    color: white;
+    text-decoration:none;
+    cursor:pointer;
+    padding: 5px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    /* justify-content: space-between; */
+    margin-bottom: 8px;
+}
+
+.singleFilmRight{
+    display:flex;
+    width:70%;
+    margin-left:50px;
+
+}
+.singleFilmRightDesc{
+    display:flex;
+    flex-direction:column;
+}
+
+.juryGuestListBar{
+    background-color: #d60606;
+    border: none;
+    width: 100%;
+    color: white;
+    padding: 5px 16px;
+    margin-right:10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    /* justify-content: space-between; */
+    margin-bottom: 8px;
+}
 
 @media all and (max-width: 1400px) {
  

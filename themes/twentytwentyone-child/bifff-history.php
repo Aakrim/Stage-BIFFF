@@ -1,4 +1,4 @@
-<!-- http://localhost/wikibifff/edition-post/  -->
+<!-- http://localhost/wikibifff/bifff-history/  -->
 
 <?php get_header() ?>
 
@@ -48,7 +48,7 @@
                             <h4 class="fst yearNom"><?php the_terms(get_the_ID(), 'category'); ?>
                                 -<?php the_field('nom'); ?></h4>
                             <p><?php the_field('description'); ?></p>
-                            <a href="#" class="box-button">CTA</a>
+                            <a href="<?php the_permalink(); ?>" class="box-button">CTA</a>
                         </div>
 
                     </div>
@@ -97,7 +97,7 @@
                                 <h4 class="fst yearNom"><?php the_terms(get_the_ID(), 'category'); ?>
                                     -<?php the_field('nom'); ?></h4>
                                 <p><?php the_field('description'); ?></p>
-                                <a href="#" class="box-button">CTA</a>
+                                <a href="<?php the_permalink(); ?>" class="box-button">CTA</a>
                             </div>
 
                         </div>
