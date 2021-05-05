@@ -56,9 +56,9 @@ $loop = new WP_Query(array(
                     <small class="text-muted"><?php the_field('realisateur'); ?></small>
                 </div>
                 <div class="card-footer">
-                <?php if (get_field('participations_aux_competitions')) : ?>
-                    <small class="text-muted">Prix : <?php the_terms(get_the_ID(), 'prix'); ?></small>
-                <?php endif ?>
+                    <?php if (get_field('participations_aux_competitions')) : ?>
+                        <small class="text-muted">Prix : <?php the_terms(get_the_ID(), 'prix'); ?></small>
+                    <?php endif ?>
                 </div>
             </div>
         </div>
@@ -79,25 +79,27 @@ $query = new WP_Query([
 ]);
 ?>
 <h1>
-    Les invités de l'édition: 
+    Les invités de l'édition:
 </h1>
 <div class="row">
     <?php while ($query->have_posts()) : $query->the_post(); ?>
         <?php $guests = get_field('invites');
         if (is_array($guests)) {
             foreach ($guests as $guest) { ?>
-    <div class="col-md-4">
-        <div class="card-group">
-            <div class="card">
-               <a <?php the_permalink(); ?>> <img class="card-img-top" style="width:350px ; height:300px;" src="<?php echo get_the_post_thumbnail_url( $guest->ID, 'thumbnail' ) ?>" /></a>
-                    <div class=" card-body">
-            </div>
-            <div class="card-footer">
-               <a href="<?php the_permalink(); ?>" ><h5 class="card-title"> <?php echo $guest->post_title; ?></h5></a>
-            </div>
-        </div>
-    </div>
-</div>
+                <div class="col-md-4">
+                    <div class="card-group">
+                        <div class="card">
+                            <a <?php the_permalink(); ?>> <img class="card-img-top" style="width:350px ; height:300px;"
+                                                               src="<?php echo get_the_post_thumbnail_url($guest->ID, 'thumbnail') ?>"/></a>
+                            <div class=" card-body">
+                            </div>
+                            <div class="card-footer">
+                                <a href="<?php the_permalink(); ?>"><h5
+                                            class="card-title"> <?php echo $guest->post_title; ?></h5></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             <?php }
         } ?>
     <?php endwhile;

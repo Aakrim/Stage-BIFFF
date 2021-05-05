@@ -5,18 +5,16 @@
 
         <div class="col-md-3">
             <div class="p-4 mb-3 rounded bg-light">
-                <h4 class="fst-italic">2021 Edition 39</h4>
-                <p class="mb-0">Saw you downtown singing the Blues. Watch you circle the drain. Why don't you let me stop by? Heavy is the head that <em>wears the crown</em>. Yes, we make angels cry, raining down on earth from up above.</p>
+                <h4 class="fst-italic"><?php the_terms(get_the_ID(), 'category'); ?>
+                    -<?php the_field('nom'); ?></h4>
+                <p class="mb-0"><?php the_field('description'); ?></p>
             </div>
 
             <div class="p-4">
-                <h4 class="fst-italic">Archives</h4>
-                <h3>
-                    Image Image Image Image Image
-                </h3>
-                <h3>
-                    Image Image Image Image Image
-                </h3>
+
+                <a href="#" class="singleFilmButton">WATCH TRAILER</a>
+                <div class="singleFilmButton"> <?php the_terms(get_the_ID(), 'category'); ?> MOVIE LIST</div>
+                <a href="http://localhost/wikibifff/films/" class="singleFilmButton">BIFFF MOVIE LIST</a>
             </div>
 
             <div class="p-4">
@@ -107,8 +105,9 @@
 
         <div class="col-md-3">
             <div class="p-4 mb-3 rounded bg-light">
-                <h4 class="fst-italic">2021 Edition 39</h4>
-                <p class="mb-0">Saw you downtown singing the Blues. Watch you circle the drain. Why don't you let me stop by? Heavy is the head that <em>wears the crown</em>. Yes, we make angels cry, raining down on earth from up above.</p>
+                <h4 class="fst-italic"><?php the_terms(get_the_ID(), 'category'); ?>
+                    -<?php the_field('nom'); ?></h4>
+                <p class="mb-0"><?php the_field('description'); ?></p>
             </div>
 
             <div class="p-4">
