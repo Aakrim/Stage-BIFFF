@@ -10,7 +10,7 @@
 
 </head>
 
-<h1>BIFF'S STAFF PICK TOP 10:</h1>
+<h1>BIFFF'S STAFF PICK TOP 10:</h1>
 
 
 
@@ -47,12 +47,17 @@
       <?php while ($loop->have_posts()) : $loop->the_post(); ?>
         <div class="item">
           <span class="titreFilm"> <?php the_field('titre_original'); ?></span>
-          <a href="<?php the_permalink(); ?>">
-            <img style="width:360px; height:500px;" src="<?php the_post_thumbnail(); ?> 
-          </a>
-         
+
+         <a href="<?php the_permalink(); ?>">
+             <?php the_post_thumbnail(); ?>
+         </a>
+
+            <div class="filmBloc">
+                <?php the_field('entry-content') ?>
+            </div>
           </div>
-          
+
+
        
        
 
@@ -98,4 +103,7 @@
         // Parameters has to be in square bracket '[]'
         owl.trigger('prev.owl.carousel', [300]);
       });
+
+
+
     </script>

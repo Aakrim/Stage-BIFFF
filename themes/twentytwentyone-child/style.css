@@ -65,6 +65,14 @@ body,html{
 }
 
 
+.filmBloc{
+
+    max-height:0;
+    transition:max-height 0.2s;
+    padding:0 15px;
+    background:#eeeeee;
+}
+
 
   .timeline-bar{
     background-color:black;

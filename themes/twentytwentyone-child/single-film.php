@@ -1,5 +1,5 @@
 <?php get_header() ?>
-<?php $loop = new WP_Query(array('post_type' => 'film', 'posts_per_page' => 3)); ?>
+
 
 <div class="singleFilmContainer">
 
@@ -31,7 +31,26 @@
             <p>Bande-originale : <?php the_field('bande_originale');?></p>
             <p>Distributeur : <?php the_field('distributeur');?></p>
 
-            <p>Edition : <?php the_terms(get_the_ID(), 'category'); ?></p>
+
+
+
+               <?php
+                $categoryTest = get_the_category();
+               // var_dump($categoryTest);
+                $loop = new WP_Query(array('post_type' => 'edition-post' , 'category_name'=> $categoryTest[0]->name));
+               // var_dump($categoryTest[0]->name);
+
+
+                while ($loop->have_posts()) :
+                $loop->the_post();
+
+                ?> <p>Edition : <a href="<?php the_permalink(); ?>"> <?php echo strip_tags($categoryTest[0]->name) ?></a> </p>
+
+                <?php endwhile ?>
+
+
+
+
 
 
 
@@ -44,6 +63,5 @@
 
 
 </div>
-
 
 <?php get_footer(); ?>
